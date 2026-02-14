@@ -14,7 +14,7 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # دیتای زنده طبق OANDA 2026 و طلاسی [cite: 2026-02-07]
     gold_price = 4960.00
     silver_price = 78.01
-    my_silver = 160.0  # [cite: 2026-02-08]
+    my_silver = 100.0  # [cite: 2026-02-08] آپدیت جدید موجودی
     ratio = gold_price / silver_price
     
     # یادآوری شکاف نسبت‌ها [cite: 2026-02-08]
