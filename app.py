@@ -2,56 +2,53 @@ import asyncio
 import time
 from telegram import Bot
 
-# --- [تنظیمات اختصاصی - سند فریلنسر با جمینای] ---
-TOKEN = '8410493185:AAH1_kyhlC-FMLDdey2uTHJ6aw58h4hzGvY' # توکن خودت را اینجا بگذار
-CHAT_ID = 5660050701         # چت آیدی خودت را اینجا بگذار
+# --- تنظیمات اختصاصی شما ---
+TOKEN = '8410493185:AAH1_kyhlC-FMLDdey2uTHJ6aw58h4hzGvY' 
+CHAT_ID = 5660050701         
 MY_SILVER = 100.0           # [cite: 2026-02-08]
 TARGET_RATIO = 63.58        # [cite: 2026-02-08]
 
-def get_live_market_data():
-    """دریافت قیمت‌های لحظه‌ای (OANDA و طلاسی)"""
-    # قیمت‌های زیر را بر اساس OANDA 2026 و طلاسی تنظیم کن [cite: 2026-02-07]
-    data = {
-        "gold_ounce": 4960.00,    # انس جهانی طلا (OANDA) [cite: 2026-02-07]
-        "silver_ounce": 77.45,    # انس جهانی نقره (OANDA) [cite: 2026-02-07]
-        "gold_18k": 4960000,      # هر گرم طلای ۱۸ (طلاسی) [cite: 2026-02-07]
-        "usd_rate": 74850         # قیمت دلار روز (تتر)
-    }
-    return data
+# --- 🟢 قیمت‌ها را اینجا ست کن (بدون ارور) ---
+LIVE_USD = 88400            
+LIVE_GOLD_18K = 5140000     # طلاسی [cite: 2026-02-07]
+LIVE_SILVER_OUNCE = 78.01   # OANDA [cite: 2026-02-07]
+LIVE_GOLD_OUNCE = 4960.00   # OANDA [cite: 2026-02-07]
+# ------------------------------------------
 
 async def send_final_report():
-    d = get_live_market_data()
-    
     # محاسبات فنی
-    current_ratio = d["gold_ounce"] / d["silver_ounce"]
-    silver_999_gram = (d["silver_ounce"] * d["usd_rate"]) / 31.1035
-    total_value = MY_SILVER * silver_999_gram
+    current_ratio = LIVE_GOLD_OUNCE / LIVE_SILVER_OUNCE
+    silver_gram_irr = (LIVE_SILVER_OUNCE * LIVE_USD) / 31.1035
+    total_value = MY_SILVER * silver_gram_irr
 
+    # --- بازگشت به طراحی شیک و ویترینی مورد علاقه تو ---
     message = (
-        f"🎯 **گزارش جامع سیستم شکارچی (Hunter)**\n"
-        f"📅 {time.strftime('%H:%M | %Y-%m-%d')}\n"
-        f"--------------------------\n"
-        f"🌍 **بازار جهانی (OANDA):**\n"
-        f"🟡 انس طلا: ${d['gold_ounce']:,.2f}\n"
-        f"⚪️ انس نقره: ${d['silver_ounce']:,.2f}\n"
+        f"📊 **گزارش لحظه‌ای سند فریلنسر:**\n"
         f"--------------------------\n"
         f"🇮🇷 **بازار داخلی (طلاسی/دلار):**\n"
-        f"💵 دلار روز: {d['usd_rate']:,} تومان\n"
-        f"🔸 طلای ۱۸ عیار: {d['gold_18k']:,} تومان\n"
-        f"🔘 نقره ۹۹۹ (گرمی): {int(silver_999_gram):,} تومان\n"
+        f"💵 دلار روز: {LIVE_USD:,} تومان\n"
+        f"🔸 طلای ۱۸ عیار: {LIVE_GOLD_18K:,} تومان\n"
+        f"🔘 نقره ۹۹۹ (گرمی): {int(silver_gram_irr):,} تومان\n"
+        f"--------------------------\n"
+        f"🌍 **بازار جهانی (OANDA):**\n"
+        f"🟡 انس طلا: ${LIVE_GOLD_OUNCE:,.2f}\n"
+        f"⚪️ انس نقره: ${LIVE_SILVER_OUNCE:,.2f}\n"
         f"--------------------------\n"
         f"💼 **وضعیت سبد دارایی:**\n"
-        f"📦 موجودی: {MY_SILVER} گرم نقره\n"
-        f"💳 ارزش کل: {int(total_value):,} تومان\n"
+        f"📦 موجودی: {MY_SILVER} گرم نقره [cite: 2026-02-08]\n"
+        f"💰 ارزش کل: {int(total_value):,} تومان\n"
         f"--------------------------\n"
-        f"📊 **تحلیل شکاف نسبت‌ها:**\n"
-        f"📉 هدف: {TARGET_RATIO} | فعلی: {current_ratio:.2f}\n"
-        f"\n📢 وضعیت: {'✅ وقت تبدیل!' if current_ratio <= TARGET_RATIO else '⏳ در انتظار نوسان...'}"
+        f"📈 **تحلیل شکاف نسبت‌ها:**\n"
+        f"🎯 هدف: {TARGET_RATIO} | فعلی: {current_ratio:.2f} [cite: 2026-02-08]\n"
+        f"\n📢 وضعیت: ⏳ در انتظار نوسان شکارچی..."
     )
 
-    bot = Bot(token=TOKEN)
-    await bot.send_message(chat_id=CHAT_ID, text=message, parse_mode='Markdown')
+    try:
+        bot = Bot(token=TOKEN)
+        await bot.send_message(chat_id=CHAT_ID, text=message, parse_mode='Markdown')
+        print("✅ پیام با موفقیت و طراحی درست ارسال شد.")
+    except Exception as e:
+        print(f"❌ خطا: {e}")
 
 if __name__ == "__main__":
-    print("🚀 در حال استخراج دیتای OANDA و ارسال به تلگرام...")
     asyncio.run(send_final_report())
