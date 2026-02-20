@@ -1,12 +1,13 @@
-Smart Gold & Silver Monitoring System (Ratio Hunter)
-این پروژه یک ربات پایتونی پیشرفته است که برای مانیتورینگ لحظه‌ای قیمت‌های بازار مالی و تحلیل **شکاف نسبت‌ها (Ratio Gap)** طراحی شده است.
+# Smart Gold & Silver Monitoring System (Ratio Hunter)
 
-## 🚀 قابلیت‌های کلیدی:
-- **اتصال به دیتای زنده:** دریافت قیمت انس جهانی از **OANDA** و قیمت طلای ۱۸ عیار از **Talasea**.
-- **تحلیل استراتژیک:** محاسبه خودکار نسبت طلا به نقره و شناسایی فرصت‌های خرید/فروش (Hunter Strategy).
-- **اعلان‌های تلگرامی:** ارسال گزارش لحظه‌ای موجودی (بر اساس ۱۰۰ گرم نقره) و سود بانکی به کاربر.
+An advanced Python-based bot designed for real-time monitoring of financial markets and analyzing the **"Ratio Gap"** strategy.
 
-## 🛠 تکنولوژی‌ها:
+## 🚀 Key Features:
+- **Live Data Integration:** Fetches real-time Gold/Silver spot prices from **OANDA** and local 18k Gold prices from **Talasea**.
+- **Hunter Strategy:** Automatically calculates the Gold-to-Silver ratio to identify optimal buying/selling opportunities based on historical gaps.
+- **Telegram Notifications:** Sends instant reports on asset valuation (based on 160g Silver holdings) and bank card profit status.
+
+## 🛠️ Tech Stack:
 - **Python 3.x**
 - **python-telegram-bot**
-- **Requests**
+- **Requests API**
